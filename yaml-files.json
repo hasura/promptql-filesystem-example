@@ -1,0 +1,15 @@
+{
+  "identifier": "k8s_yaml_files",
+  "title": "Kubernetes YAML Files",
+  "artifact_type": "table",
+  "data": [
+    {
+      "filename": "web-app-deployment.yaml",
+      "content": "apiVersion: apps/v1\nkind: Deployment\nmetadata:\n  name: web-application\n  labels:\n    app: web-app\nspec:\n  replicas: 3\n  selector:\n    matchLabels:\n      app: web-app\n  template:\n    metadata:\n      labels:\n        app: web-app\n    spec:\n      containers:\n      - name: web-app\n        image: nginx:1.19\n        ports:\n        - containerPort: 80\n        resources:\n          requests:\n            memory: \"64Mi\"\n            cpu: \"250m\"\n          limits:\n            memory: \"128Mi\"\n            cpu: \"500m\"\n"
+    },
+    {
+      "filename": "postgres-deployment.yaml",
+      "content": "apiVersion: apps/v1\nkind: Deployment\nmetadata:\n  name: postgres\n  labels:\n    app: postgres\nspec:\n  replicas: 1\n  selector:\n    matchLabels:\n      app: postgres\n  template:\n    metadata:\n      labels:\n        app: postgres\n    spec:\n      containers:\n      - name: postgres\n        image: postgres:13\n        env:\n        - name: POSTGRES_PASSWORD\n          valueFrom:\n            secretKeyRef:\n              name: postgres-secret\n              key: password\n        ports:\n        - containerPort: 5432\n        volumeMounts:\n        - name: postgres-storage\n          mountPath: /var/lib/postgresql/data\n      volumes:\n      - name: postgres-storage\n        persistentVolumeClaim:\n          claimName: postgres-pvc\n"
+    }
+  ]
+}

@@ -1,0 +1,94 @@
+---
+kind: ObjectType
+version: v1
+definition:
+  name: ls_options
+  fields:
+    - name: all
+      type: Boolean
+    - name: long
+      type: Boolean
+  graphql:
+    typeName: ls_options
+    inputTypeName: ls_options_input
+  dataConnectorTypeMapping:
+    - dataConnectorName: mynodejs
+      dataConnectorObjectType: ls_options
+
+---
+kind: TypePermissions
+version: v1
+definition:
+  typeName: ls_options
+  permissions:
+    - role: admin
+      output:
+        allowedFields:
+          - all
+          - long
+
+---
+kind: ObjectType
+version: v1
+definition:
+  name: CommandResultWithData
+  fields:
+    - name: code
+      type: Float!
+    - name: message
+      type: String
+    - name: result
+      type: String
+    - name: success
+      type: Boolean!
+  graphql:
+    typeName: CommandResultWithData
+    inputTypeName: CommandResultWithData_input
+  dataConnectorTypeMapping:
+    - dataConnectorName: mynodejs
+      dataConnectorObjectType: CommandResultWithData
+
+---
+kind: TypePermissions
+version: v1
+definition:
+  typeName: CommandResultWithData
+  permissions:
+    - role: admin
+      output:
+        allowedFields:
+          - code
+          - message
+          - result
+          - success
+
+---
+kind: Command
+version: v1
+definition:
+  name: ls
+  outputType: CommandResultWithData!
+  arguments:
+    - name: dirPath
+      type: String!
+      description: "- Path to directory"
+    - name: options
+      type: ls_options!
+      description: "- Optional settings for listing"
+  source:
+    dataConnectorName: mynodejs
+    dataConnectorCommand:
+      function: ls
+  graphql:
+    rootFieldName: ls
+    rootFieldKind: Query
+
+---
+kind: CommandPermissions
+version: v1
+definition:
+  commandName: ls
+  permissions:
+    - role: admin
+      allowExecution: true
+

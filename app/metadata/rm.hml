@@ -1,0 +1,92 @@
+---
+kind: ObjectType
+version: v1
+definition:
+  name: rm_options
+  fields:
+    - name: force
+      type: Boolean
+    - name: recursive
+      type: Boolean
+  graphql:
+    typeName: rm_options
+    inputTypeName: rm_options_input
+  dataConnectorTypeMapping:
+    - dataConnectorName: mynodejs
+      dataConnectorObjectType: rm_options
+
+---
+kind: TypePermissions
+version: v1
+definition:
+  typeName: rm_options
+  permissions:
+    - role: admin
+      output:
+        allowedFields:
+          - force
+          - recursive
+
+---
+kind: ObjectType
+version: v1
+definition:
+  name: CommandResult
+  fields:
+    - name: code
+      type: Float!
+    - name: message
+      type: String
+    - name: success
+      type: Boolean!
+  graphql:
+    typeName: CommandResult
+    inputTypeName: CommandResult_input
+  dataConnectorTypeMapping:
+    - dataConnectorName: mynodejs
+      dataConnectorObjectType: CommandResult
+
+---
+kind: TypePermissions
+version: v1
+definition:
+  typeName: CommandResult
+  permissions:
+    - role: admin
+      output:
+        allowedFields:
+          - code
+          - message
+          - success
+
+---
+kind: Command
+version: v1
+definition:
+  name: rm
+  outputType: CommandResult!
+  arguments:
+    - name: filePath
+      type: String!
+      description: "- Path to file"
+    - name: options
+      type: rm_options!
+      description: "- Remove options"
+  source:
+    dataConnectorName: mynodejs
+    dataConnectorCommand:
+      procedure: rm
+  graphql:
+    rootFieldName: rm
+    rootFieldKind: Mutation
+  description: Remove a file by running the bash rm command
+
+---
+kind: CommandPermissions
+version: v1
+definition:
+  commandName: rm
+  permissions:
+    - role: admin
+      allowExecution: true
+

@@ -1,0 +1,57 @@
+---
+kind: ObjectType
+version: v1
+definition:
+  name: mkdir_options
+  fields:
+    - name: parents
+      type: Boolean
+  graphql:
+    typeName: mkdir_options
+    inputTypeName: mkdir_options_input
+  dataConnectorTypeMapping:
+    - dataConnectorName: mynodejs
+      dataConnectorObjectType: mkdir_options
+
+---
+kind: TypePermissions
+version: v1
+definition:
+  typeName: mkdir_options
+  permissions:
+    - role: admin
+      output:
+        allowedFields:
+          - parents
+
+---
+kind: Command
+version: v1
+definition:
+  name: mkdir
+  outputType: CommandResult!
+  arguments:
+    - name: dirPath
+      type: String!
+      description: "- Path to directory"
+    - name: options
+      type: mkdir_options!
+      description: "- Directory creation options"
+  source:
+    dataConnectorName: mynodejs
+    dataConnectorCommand:
+      procedure: mkdir
+  graphql:
+    rootFieldName: mkdir
+    rootFieldKind: Mutation
+  description: Create a directory by running the bash mkdir command
+
+---
+kind: CommandPermissions
+version: v1
+definition:
+  commandName: mkdir
+  permissions:
+    - role: admin
+      allowExecution: true
+

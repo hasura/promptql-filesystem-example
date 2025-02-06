@@ -1,0 +1,60 @@
+---
+kind: ObjectType
+version: v1
+definition:
+  name: cp_options
+  fields:
+    - name: recursive
+      type: Boolean
+  graphql:
+    typeName: cp_options
+    inputTypeName: cp_options_input
+  dataConnectorTypeMapping:
+    - dataConnectorName: mynodejs
+      dataConnectorObjectType: cp_options
+
+---
+kind: TypePermissions
+version: v1
+definition:
+  typeName: cp_options
+  permissions:
+    - role: admin
+      output:
+        allowedFields:
+          - recursive
+
+---
+kind: Command
+version: v1
+definition:
+  name: cp
+  outputType: CommandResult!
+  arguments:
+    - name: dest
+      type: String!
+      description: "- Destination path"
+    - name: options
+      type: cp_options!
+      description: "- Copy options"
+    - name: src
+      type: String!
+      description: "- Source path"
+  source:
+    dataConnectorName: mynodejs
+    dataConnectorCommand:
+      procedure: cp
+  graphql:
+    rootFieldName: cp
+    rootFieldKind: Mutation
+  description: Copy a file or directory by running the bash cp command
+
+---
+kind: CommandPermissions
+version: v1
+definition:
+  commandName: cp
+  permissions:
+    - role: admin
+      allowExecution: true
+

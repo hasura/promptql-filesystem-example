@@ -1,0 +1,27 @@
+---
+kind: Command
+version: v1
+definition:
+  name: cat
+  outputType: CommandResultWithData!
+  arguments:
+    - name: filePath
+      type: String!
+      description: "- Path to file"
+  source:
+    dataConnectorName: mynodejs
+    dataConnectorCommand:
+      function: cat
+  graphql:
+    rootFieldName: cat
+    rootFieldKind: Query
+
+---
+kind: CommandPermissions
+version: v1
+definition:
+  commandName: cat
+  permissions:
+    - role: admin
+      allowExecution: true
+

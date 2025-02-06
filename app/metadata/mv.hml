@@ -1,0 +1,31 @@
+---
+kind: Command
+version: v1
+definition:
+  name: mv
+  outputType: CommandResult!
+  arguments:
+    - name: dest
+      type: String!
+      description: "- Destination path"
+    - name: src
+      type: String!
+      description: "- Source path"
+  source:
+    dataConnectorName: mynodejs
+    dataConnectorCommand:
+      procedure: mv
+  graphql:
+    rootFieldName: mv
+    rootFieldKind: Mutation
+  description: Move/rename a file or directory by running the bash mv command
+
+---
+kind: CommandPermissions
+version: v1
+definition:
+  commandName: mv
+  permissions:
+    - role: admin
+      allowExecution: true
+

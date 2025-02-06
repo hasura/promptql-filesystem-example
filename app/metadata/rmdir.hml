@@ -1,0 +1,31 @@
+---
+kind: Command
+version: v1
+definition:
+  name: rmdir
+  outputType: CommandResult!
+  arguments:
+    - name: dirPath
+      type: String!
+      description: "- Path to directory"
+    - name: options
+      type: rm_options!
+      description: "- Remove options"
+  source:
+    dataConnectorName: mynodejs
+    dataConnectorCommand:
+      procedure: rmdir
+  graphql:
+    rootFieldName: rmdir
+    rootFieldKind: Mutation
+  description: Remove a directory by running the bash rmdir command
+
+---
+kind: CommandPermissions
+version: v1
+definition:
+  commandName: rmdir
+  permissions:
+    - role: admin
+      allowExecution: true
+

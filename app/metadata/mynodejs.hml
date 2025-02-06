@@ -1,0 +1,249 @@
+kind: DataConnectorLink
+version: v1
+definition:
+  name: mynodejs
+  url:
+    readWriteUrls:
+      read:
+        valueFromEnv: APP_MYNODEJS_READ_URL
+      write:
+        valueFromEnv: APP_MYNODEJS_WRITE_URL
+  headers:
+    Authorization:
+      valueFromEnv: APP_MYNODEJS_AUTHORIZATION_HEADER
+  schema:
+    version: v0.1
+    schema:
+      scalar_types:
+        Boolean:
+          representation:
+            type: boolean
+          aggregate_functions: {}
+          comparison_operators:
+            _eq:
+              type: equal
+        Float:
+          representation:
+            type: float64
+          aggregate_functions: {}
+          comparison_operators:
+            _eq:
+              type: equal
+        String:
+          representation:
+            type: string
+          aggregate_functions: {}
+          comparison_operators:
+            _eq:
+              type: equal
+      object_types:
+        CommandResult:
+          fields:
+            code:
+              type:
+                type: named
+                name: Float
+            message:
+              type:
+                type: nullable
+                underlying_type:
+                  type: named
+                  name: String
+            success:
+              type:
+                type: named
+                name: Boolean
+        CommandResultWithData:
+          fields:
+            code:
+              type:
+                type: named
+                name: Float
+            message:
+              type:
+                type: nullable
+                underlying_type:
+                  type: named
+                  name: String
+            result:
+              type:
+                type: nullable
+                underlying_type:
+                  type: named
+                  name: String
+            success:
+              type:
+                type: named
+                name: Boolean
+        cp_options:
+          fields:
+            recursive:
+              type:
+                type: nullable
+                underlying_type:
+                  type: named
+                  name: Boolean
+        ls_options:
+          fields:
+            all:
+              type:
+                type: nullable
+                underlying_type:
+                  type: named
+                  name: Boolean
+            long:
+              type:
+                type: nullable
+                underlying_type:
+                  type: named
+                  name: Boolean
+        mkdir_options:
+          fields:
+            parents:
+              type:
+                type: nullable
+                underlying_type:
+                  type: named
+                  name: Boolean
+        rm_options:
+          fields:
+            force:
+              type:
+                type: nullable
+                underlying_type:
+                  type: named
+                  name: Boolean
+            recursive:
+              type:
+                type: nullable
+                underlying_type:
+                  type: named
+                  name: Boolean
+        writeFile_options:
+          fields:
+            append:
+              type:
+                type: nullable
+                underlying_type:
+                  type: named
+                  name: Boolean
+      collections: []
+      functions:
+        - name: ls
+          arguments:
+            dirPath:
+              description: '- Path to directory'
+              type:
+                type: named
+                name: String
+            options:
+              description: '- Optional settings for listing'
+              type:
+                type: named
+                name: ls_options
+          result_type:
+            type: named
+            name: CommandResultWithData
+        - name: cat
+          arguments:
+            filePath:
+              description: '- Path to file'
+              type:
+                type: named
+                name: String
+          result_type:
+            type: named
+            name: CommandResultWithData
+      procedures:
+        - name: rm
+          description: Remove a file by running the bash rm command
+          arguments:
+            filePath:
+              description: '- Path to file'
+              type:
+                type: named
+                name: String
+            options:
+              description: '- Remove options'
+              type:
+                type: named
+                name: rm_options
+          result_type:
+            type: named
+            name: CommandResult
+        - name: rmdir
+          description: Remove a directory by running the bash rmdir command
+          arguments:
+            dirPath:
+              description: '- Path to directory'
+              type:
+                type: named
+                name: String
+            options:
+              description: '- Remove options'
+              type:
+                type: named
+                name: rm_options
+          result_type:
+            type: named
+            name: CommandResult
+        - name: mkdir
+          description: Create a directory by running the bash mkdir command
+          arguments:
+            dirPath:
+              description: '- Path to directory'
+              type:
+                type: named
+                name: String
+            options:
+              description: '- Directory creation options'
+              type:
+                type: named
+                name: mkdir_options
+          result_type:
+            type: named
+            name: CommandResult
+        - name: cp
+          description: Copy a file or directory by running the bash cp command
+          arguments:
+            dest:
+              description: '- Destination path'
+              type:
+                type: named
+                name: String
+            options:
+              description: '- Copy options'
+              type:
+                type: named
+                name: cp_options
+            src:
+              description: '- Source path'
+              type:
+                type: named
+                name: String
+          result_type:
+            type: named
+            name: CommandResult
+        - name: mv
+          description: Move/rename a file or directory by running the bash mv command
+          arguments:
+            dest:
+              description: '- Destination path'
+              type:
+                type: named
+                name: String
+            src:
+              description: '- Source path'
+              type:
+                type: named
+                name: String
+          result_type:
+            type: named
+            name: CommandResult
+    capabilities:
+      version: 0.1.6
+      capabilities:
+        query:
+          variables: {}
+          nested_fields: {}
+        mutation: {}

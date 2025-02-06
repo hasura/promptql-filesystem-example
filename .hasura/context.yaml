@@ -1,0 +1,21 @@
+kind: Context
+version: v3
+definition:
+  current: default
+  contexts:
+    default:
+      project: measured-cicada-5995
+      supergraph: ../supergraph.yaml
+      subgraph: ../app/subgraph.yaml
+      localEnvFile: ../.env
+      cloudEnvFile: ../.env.cloud
+  scripts:
+    mynodejs:
+      bash: |
+        cd app/connector/mynodejs && \
+        ddn connector setenv --connector connector.yaml --env-file ../../../.env -- npm run start
+    docker-start:
+      bash: |
+        HASURA_DDN_PAT=$(ddn auth print-pat) PROMPTQL_SECRET_KEY=$(ddn auth print-promptql-secret-key) docker compose -f compose.yaml --env-file .env up --build --pull always
+      powershell: $Env:HASURA_DDN_PAT = ddn auth print-pat; $Env:PROMPTQL_SECRET_KEY = ddn auth print-promptql-secret-key; docker compose -f compose.yaml --env-file .env up --build --pull always
+  promptQL: true
