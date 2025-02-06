@@ -26,11 +26,6 @@ definition:
         allowedFields:
           - all
           - long
-    - role: user
-      output:
-        allowedFields:
-          - all
-          - long
 
 ---
 kind: ObjectType
@@ -66,13 +61,6 @@ definition:
           - message
           - result
           - success
-    - role: user
-      output:
-        allowedFields:
-          - code
-          - message
-          - result
-          - success
 
 ---
 kind: Command
@@ -102,6 +90,4 @@ definition:
   commandName: ls
   permissions:
     - role: admin
-      allowExecution: true
-    - role: user
       allowExecution: true
