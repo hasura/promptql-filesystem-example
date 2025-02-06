@@ -74,7 +74,7 @@ export async function ls(
  */
 export async function writeFile(
   filePath: string,
-  content: string | Buffer,
+  content: string,
   options: { append?: boolean } = {}
 ): Promise<CommandResult> {
   try {

@@ -155,6 +155,27 @@ definition:
             type: named
             name: CommandResultWithData
       procedures:
+        - name: writeFile
+          description: Write content to a file (equivalent to "cat > file" in bash)
+          arguments:
+            content:
+              description: '- Content to write'
+              type:
+                type: named
+                name: String
+            filePath:
+              description: '- Path to file'
+              type:
+                type: named
+                name: String
+            options:
+              description: '- Write options'
+              type:
+                type: named
+                name: writeFile_options
+          result_type:
+            type: named
+            name: CommandResult
         - name: rm
           description: Remove a file by running the bash rm command
           arguments:

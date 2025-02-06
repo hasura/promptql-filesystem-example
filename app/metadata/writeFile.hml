@@ -2,60 +2,59 @@
 kind: ObjectType
 version: v1
 definition:
-  name: cp_options
+  name: writeFile_options
   fields:
-    - name: recursive
+    - name: append
       type: Boolean
   graphql:
-    typeName: cp_options
-    inputTypeName: cp_options_input
+    typeName: writeFile_options
+    inputTypeName: writeFile_options_input
   dataConnectorTypeMapping:
     - dataConnectorName: mynodejs
-      dataConnectorObjectType: cp_options
+      dataConnectorObjectType: writeFile_options
 
 ---
 kind: TypePermissions
 version: v1
 definition:
-  typeName: cp_options
+  typeName: writeFile_options
   permissions:
     - role: admin
       output:
         allowedFields:
-          - recursive
+          - append
 
 ---
 kind: Command
 version: v1
 definition:
-  name: cp
+  name: writeFile
   outputType: CommandResult!
   arguments:
-    - name: dest
+    - name: content
       type: String!
-      description: "- Destination path"
+      description: "- Content to write"
+    - name: filePath
+      type: String!
+      description: "- Path to file"
     - name: options
-      type: cp_options!
-      description: "- Copy options"
-    - name: src
-      type: String!
-      description: "- Source path"
+      type: writeFile_options!
+      description: "- Write options"
   source:
     dataConnectorName: mynodejs
     dataConnectorCommand:
-      procedure: cp
+      procedure: writeFile
   graphql:
-    rootFieldName: cp
+    rootFieldName: writeFile
     rootFieldKind: Mutation
-  description: Copy a file or directory by running the bash cp command
+  description: Write content to a file (equivalent to "cat > file" in bash)
 
 ---
 kind: CommandPermissions
 version: v1
 definition:
-  commandName: cp
+  commandName: writeFile
   permissions:
     - role: admin
       allowExecution: true
-    - role: user
-      allowExecution: true
+

@@ -26,6 +26,11 @@ definition:
         allowedFields:
           - all
           - long
+    - role: user
+      output:
+        allowedFields:
+          - all
+          - long
 
 ---
 kind: ObjectType
@@ -55,6 +60,13 @@ definition:
   typeName: CommandResultWithData
   permissions:
     - role: admin
+      output:
+        allowedFields:
+          - code
+          - message
+          - result
+          - success
+    - role: user
       output:
         allowedFields:
           - code
@@ -91,4 +103,5 @@ definition:
   permissions:
     - role: admin
       allowExecution: true
-
+    - role: user
+      allowExecution: true
